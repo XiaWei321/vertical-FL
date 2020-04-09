@@ -112,7 +112,7 @@ print(df['前五大股东持股总和占比（%）'])
 del df['国有控股占比（%）']
 
 
-# print(df.info())
+print(df.info())
 # 数据集x
 
 # X_train, X_test, Y_train, Y_test = train_test_split(df, Y, test_size=0.2, random_state=100)
