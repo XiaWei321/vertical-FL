@@ -67,7 +67,7 @@ df.loc[outliers, '产权比率（%）'] = df['产权比率（%）'].quantile(0.0
 outliers = df[df['产权比率（%）'] > df['产权比率（%）'].quantile(0.92)].index
 df.loc[outliers, '产权比率（%）'] = df['产权比率（%）'].quantile(0.92)
 scaler = MinMaxScaler()
-df['资产负债率（%）'] = scaler.fit_transform(df['产权比率（%）'].values.reshape(-1, 1))
+df['产权比率（%）'] = scaler.fit_transform(df['产权比率（%）'].values.reshape(-1, 1))
 
 # 净利润增长率
 outliers = df[df['净利润增长率（%）'] > df['净利润增长率（%）'].quantile(0.98)].index
@@ -115,9 +115,9 @@ del df['国有控股占比（%）']
 print(df.info())
 # 数据集x
 
-# X_train, X_test, Y_train, Y_test = train_test_split(df, Y, test_size=0.2, random_state=100)
-# X_train.to_csv('../data/train_data.csv', header=True, index=False)
-# Y_train.to_csv('../data/train_label.csv', header=True, index=False)
-# X_test.to_csv('../data/test_data.csv', header=True, index=False)
-# Y_test.to_csv('../data/test_label.csv', header=True, index=False)
+X_train, X_test, Y_train, Y_test = train_test_split(df, Y, test_size=0.2, random_state=100)
+X_train.to_csv('../data/train_data.csv', header=True, index=False)
+Y_train.to_csv('../data/train_label.csv', header=True, index=False)
+X_test.to_csv('../data/test_data.csv', header=True, index=False)
+Y_test.to_csv('../data/test_label.csv', header=True, index=False)
 
