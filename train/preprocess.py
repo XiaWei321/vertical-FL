@@ -5,15 +5,20 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-df = pd.read_csv('../企业数据特征记录.csv')
+df = pd.read_csv('../企业数据特征记录2.csv')
 df.drop(df.columns[17:138], axis=1, inplace=True)  # 删除乱码
 del df['公司名称']
 del df['数据的时间']
 
 Y = df['信用评级']
 grade = ['C', 'CC', 'CCC', 'B', 'BB', 'BBB', 'A', 'AA', 'AAA']
+
+# AAA评分为0.9-1，AA评分为 0.9-0.1125，接下去每个评级的占用区间范围为0.1125
 for i in range(len(df['信用评级'])):
-    Y[i] = grade.index(Y[i])
+    Y[i] = grade.index(Y[i]) * 0.1125 + 0.1125 / 2
+Y[8] = 0.95
+
+
 del df['信用评级']
 
 # 所有数据原来是string类型的，转换成数值类型
@@ -107,15 +112,16 @@ df['流动资产周转率（次）'] = scaler.fit_transform(df['流动资产周�
 scaler = MinMaxScaler()
 df['前五大股东持股总和占比（%）'] = scaler.fit_transform(df['前五大股东持股总和占比（%）'].values.reshape(-1, 1))
 
-print(df['前五大股东持股总和占比（%）'])
+# print(df['前五大股东持股总和占比（%）'])
 # 国有控股占比
 del df['国有控股占比（%）']
 
 
-print(df.info())
+# print(df.info())
 # 数据集x
 
-X_train, X_test, Y_train, Y_test = train_test_split(df, Y, test_size=0.2, random_state=100)
+X_train, X_test, Y_train, Y_test = train_test_split(df, Y, test_size=0.15, random_state=100)
+print(Y_test)
 X_train.to_csv('../data/train_data.csv', header=True, index=False)
 Y_train.to_csv('../data/train_label.csv', header=True, index=False)
 X_test.to_csv('../data/test_data.csv', header=True, index=False)
